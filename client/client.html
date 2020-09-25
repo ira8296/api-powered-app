@@ -64,6 +64,133 @@
                 option.innerHTML = p;
                 powerSelectII.appendChild(option);
             }
+
+            function uploadFile(file){
+                var url = '../src/index.php';
+                var xhr = new XMLHttpRequest();
+                var fd = new FormData();
+                xhr.open("POST", url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Every thing ok, file uploaded
+                        console.log(xhr.responseText); // handle response.
+                    }
+                };
+                fd.append("upload_file", file);
+                xhr.send(fd);
+            }
+
+            document.querySelector("#fileDrop").addEventListener('change', function(){
+                uploadFile(this.File);
+            }, false);
+
+            const reponseHandler = (xhr, parseResponse) => {
+            const status = document.querySelector("#message");
+
+                switch(xhr.status) {
+                    case 200:
+                        status.innerHTML = `<b>Search Successful</b>`;
+                        break;
+                    case 201:
+                        status.innerHTML = `<b>Created successfully</b>`;
+                        break;
+                    case 204:
+                        status.innerHTML = `<b>Heroes Updated</b>`;
+                        break;
+                    case 400:
+                        status.innerHTML = `<b>Bad Request</b>`;
+                        break;
+                    case 404:
+                        status.innerHTML = `<b>Resource Not Found</b>`;
+                        break;
+                    default:
+                        status.innerHTML = `<b>Error code has not been implemented</b>`;
+                        break;
+                }
+
+                if(parseResponse) {
+                    const obj = JSON.parse(xhr.response);
+                    console.dir(obj);
+
+                    status.innerHTML += `<p>${xhr.response}</p>`;
+                }
+            };
+
+            const requestUpdate = (e, userForm) => {
+                const url = userForm.querySelector("#urlField").value;
+                const method = userForm.querySelector("#methodSelect").value;
+        
+                const xhr = new XMLHttpRequest();
+
+                xhr.open(method, url);
+
+                xhr.setRequestHeader('Accept', 'application/json');
+
+                if(method == 'get'){
+                    xhr.onload = () => reponseHandler(xhr, true);
+                }
+                else{
+                    xhr.onload = () => reponseHandler(xhr, false);
+                }
+
+                xhr.send();
+
+                e.preventDefault();
+
+                return false;
+            };
+
+            const requestSearch = (e, searchForm) => {
+                const input = searchForm.querySelector("input").value;
+                const searchMethod = searchForm.getAttribute('method');
+                
+                const xhr = new XMLHttpRequest();
+                
+                xhr.open(searchMethod, input);
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.onload = () => reponseHandler(xhr, true);
+                
+                xhr.send();
+
+                e.preventDefault();
+                
+                return false;
+            };
+
+            const sendPost = (e, nameForm) => {
+                e.preventDefault();
+
+                const nameAction = nameForm.getAttribute('action');
+                const nameMethod = nameForm.getAttribute('method');
+
+                const nameField = nameForm.querySelector('#nameField');
+                const heroField = nameForm.querySelector('#heroField');
+                const imgField = document.querySelector("#fileDrop");
+                const ageField = nameForm.querySelector('#ageField');
+                const powerSelect1 = nameForm.querySelector('#powerSelect1');
+                const powerSelect2 = nameForm.querySelector('#powerSelect2');
+                
+                const xhr = new XMLHttpRequest();
+                xhr.open(nameMethod, nameAction);
+
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                xhr.onload = () => reponseHandler(xhr, true);
+                
+                let img = document.createElement("img");
+
+                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}&image=${}`;
+                xhr.send(formData);
+
+                return false;
+            };
+
+            const init = () => {
+                
+            };
+
+            window.onload = init;
         </script>
     </head>
     <body>
@@ -82,16 +209,10 @@
               <label for="mainPower">Main Power: </label>
               <select id="powerSelect2" name="mainPower">
               </select>
-              <form enctype="multipart/form-data" action="uploader.php" method="POST">
-                  <input type="hidden" name="MAX_FILE_SIZE" value="1000000">
-                  Upload an image of your hero here: <input name="uploadedfile" type="file" /><br />
-                  <input type="submit" value="Upload File" />
-              </form>
+              <input type="file" id="fileDrop" />
               <input type="submit" value="Add User" />
             </form>
             <form id="userForm" action="/getUsers" method="get">
-              <input type="text" value="Search for a hero">
-              <button>Search</button>
               <select id='urlField'>
                 <option value='/getUsers'>/getUsers</option>
                 <option value='/notReal'>/notReal</option>
@@ -102,6 +223,11 @@
               </select>
               <input type="submit" value="Get User" />
             </form>
+            <form id="searchForm" action="/searchUsers" method="get">
+                <input type="text" value="Search for a hero">
+                <button>Search</button>
+            </form>
+            <p id="message"></p>
         </section>
         <section id="content">
         </section>

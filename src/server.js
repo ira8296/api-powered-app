@@ -14,6 +14,7 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getStyle,
     '/getUsers': jsonHandler.getUsers,
+    '/searchUsers': jsonHandler.search,
     '/notReal': jsonHandler.notReal,
     notFound: jsonHandler.notFound,
   },

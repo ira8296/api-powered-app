@@ -1,4 +1,11 @@
-const users = {};
+const userKey = "users";
+const storedUsers = localStorage.getItem(userKey);
+
+let users = {};
+
+if(storedUsers){
+    users = storedUsers;
+}
 
 const respondJSON = (request, response, status, object) => {
   const headers = {
@@ -29,41 +36,68 @@ const addUser = (request, response, params) => {
     
   let responseCode = 201;
 
-  if (!params.name || !params.age) {
+  if (!params.realName || !params.heroName || !params.age || !params.power1 || !params.power2) {
     const responseJSON = {
       id: 'missingParams',
-      message: 'Name and age are both required',
+      message: 'Names, age, and/or powers are required',
     };
     return respondJSON(request, response, 400, responseJSON);
   }
-  else if (users[params.name]) {
-    users[params.name] = {};
-    users[params.name].name = params.name;
-    users[params.name].age = params.age;
-    // users[params.name] = newUser;
+  else if (users[params.realName]) {
+    users[params.realName] = {};
+    users[params.realName].realName = params.realName;
+    users[params.realName].heroName = params.heroName;
+    users[params.realName].age = params.age;
+    users[params.realName].power1 = params.power1;
+    users[params.realName].power2 = params.power2;
+    if(params.image){
+        users[params.realName].image = params.image;
+    }
     responseCode = 204;
   }
   else {
-   newUser.name = params.name;
+   newUser.realName = params.realName;
+   newUser.heroName = params.heroName;
    newUser.age = params.age;
+   newUser.power1 = params.power1;
+   newUser.power2 = params.power2;
+   if(params.image){
+       newUser.image = params.image;
+   }
    newUser.message = 'Created successfully';
    users[params.name] = newUser;   
   }
+  localStorage.setItem(userKey, users);
   return respondJSON(request, response, responseCode, newUser);
 };
 
 const getUsers = (request, response) => {
-  const responseJSON = {
-    users,
-  };
+  const responseJSON = users;
 
   return respondJSON(request, response, 200, responseJSON);
 };
 
 const getUsersMeta = (request, response) => respondJSONMeta(request, response, 200);
+
+const search = (request, response, input) => {
+    let responseCode = 200;
+    let results = {};
+    
+    for(const u in users) {
+        if(u.realName === input || u.heroName === input || u.power1 === input || u.power2 === input) {
+            results[u.realName] = u;
+        }
+    }
+    
+    if(results === {}) {
+        responseCode = 404;
+    }
+    return respondJSON(request, response, responseCode, results);
+};
+
 const notReal = (request, response) => {
   const responseJSON = {
-    message: 'The page you are looking for does not exist',
+    message: 'The data you are looking for does not exist',
     id: 'notFound',
   };
   respondJSON(request, response, 404, responseJSON);
@@ -75,7 +109,7 @@ const notRealMeta = (request, response) => {
 
 const notFound = (request, response) => {
   const responseJSON = {
-    message: 'The page you are looking for could not be found',
+    message: 'The data you are looking for could not be found',
     id: 'notFound',
   };
   respondJSON(request, response, 404, responseJSON);
@@ -89,6 +123,7 @@ module.exports = {
   addUser,
   getUsers,
   getUsersMeta,
+  search,
   notReal,
   notRealMeta,
   notFound,
