@@ -1,0 +1,21 @@
+{
+  "name": "api-powered-app",
+  "version": "1.0.0",
+  "description": "A rich web app which allows users to create themselves as super heroes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ira8296/api-powered-app.git"
+  },
+  "author": "Ike Ajah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ira8296/api-powered-app/issues"
+  },
+  "homepage": "https://github.com/ira8296/api-powered-app#readme"
+}

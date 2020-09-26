@@ -65,7 +65,7 @@
                 powerSelectII.appendChild(option);
             }
 
-            function uploadFile(file){
+           /* function uploadFile(file){
                 var url = '../src/index.php';
                 var xhr = new XMLHttpRequest();
                 var fd = new FormData();
@@ -82,10 +82,11 @@
 
             document.querySelector("#fileDrop").addEventListener('change', function(){
                 uploadFile(this.File);
-            }, false);
+            }, false);*/
 
             const reponseHandler = (xhr, parseResponse) => {
             const status = document.querySelector("#message");
+            const content = document.querySelector("#content");
 
                 switch(xhr.status) {
                     case 200:
@@ -110,9 +111,62 @@
 
                 if(parseResponse) {
                     const obj = JSON.parse(xhr.response);
+                    const result = xhr.response;
                     console.dir(obj);
 
-                    status.innerHTML += `<p>${xhr.response}</p>`;
+                    let section = document.createElement("section");
+                    section.className = "result";
+                    
+                    for(let r in result){
+                        let type = typeof r;
+                        if(type == "object"){
+                            let section = document.createElement("section");
+                            section.className = "result";
+                            
+                            let title = document.createElement("h4");
+                            title.innerHTML = r.heroName;
+                            let identity = document.createElement("b");
+                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + r.realName;
+                            let age = document.createElement("b");
+                            age.innerHTML = `<h6>Age: </h6> ` + r.age;
+                            let powers = document.createElement("b");
+                            powers.innerHTML = `<h6>Powers: </h6> ` + r.power1 + ", " + r.power2;
+                            let image = r.image;
+                            
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(identity);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            
+                            content.appendChild(section);
+                        }
+                        else{
+                            let section = document.createElement("section");
+                            section.className = "result";
+                            
+                            let title = document.createElement("h4");
+                            title.innerHTML = result.heroName;
+                            let identity = document.createElement("b");
+                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + result.realName;
+                            let age = document.createElement("b");
+                            age.innerHTML = `<h6>Age: </h6> ` + result.age;
+                            let powers = document.createElement("b");
+                            powers.innerHTML = `<h6>Powers: </h6> ` + result.power1 + ", " + result.power2;
+                            let image = result.image;
+                            
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(identity);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            
+                            content.appendChild(section);
+                            return;
+                        }
+                    }
+                    
+                    
                 }
             };
 
@@ -179,15 +233,26 @@
                 xhr.onload = () => reponseHandler(xhr, true);
                 
                 let img = document.createElement("img");
+                img.src = imgField.value;
 
-                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}&image=${}`;
+                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}&image=${img}`;
                 xhr.send(formData);
 
                 return false;
             };
 
             const init = () => {
+                const nameForm = document.querySelector("#nameForm");
+                const userForm = document.querySelector("#userForm");
+                const searchForm = document.querySelector("#searchForm");
                 
+                const getUsers = (e) => requestUpdate(e, userForm);
+                const addUser = (e) => sendPost(e, nameForm);
+                const searchUsers = (e) => requestSearch(e, searchForm);
+                
+                userForm.addEventListener('submit', getUsers);
+                nameForm.addEventListener('submit', addUser);
+                searchForm.addEventListener('submit', searchUsers);
             };
 
             window.onload = init;
@@ -209,7 +274,10 @@
               <label for="mainPower">Main Power: </label>
               <select id="powerSelect2" name="mainPower">
               </select>
-              <input type="file" id="fileDrop" />
+              <form enctype="multipart/form-data" action="index.php" method="POST">
+                  "Choose Hero Image: "<input name="userFile" type="file">
+                  <input type="submit" value="Upload">
+              </form>
               <input type="submit" value="Add User" />
             </form>
             <form id="userForm" action="/getUsers" method="get">
@@ -225,7 +293,7 @@
             </form>
             <form id="searchForm" action="/searchUsers" method="get">
                 <input type="text" value="Search for a hero">
-                <button>Search</button>
+                <input type="submit" value="Search" />
             </form>
             <p id="message"></p>
         </section>
