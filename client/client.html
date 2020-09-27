@@ -111,7 +111,8 @@
 
                 if(parseResponse) {
                     const obj = JSON.parse(xhr.response);
-                    const result = xhr.response;
+                    const results = xhr.response;
+                    let result = Object.keys(results);
                     console.dir(obj);
                     
                     content.innerHTML = "";
@@ -119,21 +120,21 @@
                     let section = document.createElement("section");
                     section.className = "result";
                     
-                    for(let r in result){
-                        let type = typeof r;
+                    for(let r of result){
+                        let type = typeof results[r];
                         if(type == "object"){
                             let section = document.createElement("section");
                             section.className = "result";
                             
                             let title = document.createElement("h4");
-                            title.innerHTML = r.heroName;
+                            title.innerHTML = results[r].heroName;
                             let identity = document.createElement("b");
-                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + r.realName;
+                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + results[r].realName;
                             let age = document.createElement("b");
-                            age.innerHTML = `<h6>Age: </h6> ` + r.age;
+                            age.innerHTML = `<h6>Age: </h6> ` + results[r].age;
                             let powers = document.createElement("b");
-                            powers.innerHTML = `<h6>Powers: </h6> ` + r.power1 + ", " + r.power2;
-                            let image = r.image;
+                            powers.innerHTML = `<h6>Powers: </h6> ` + results[r].power1 + ", " + results[r].power2;
+                            let image = results[r].image;
                             
                             section.appendChild(image);
                             section.appendChild(title);

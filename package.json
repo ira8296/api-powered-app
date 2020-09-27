@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/server.js",
     "pretest": "eslint ./src --fix",
-    "test": "echo \"Tests complete\""n
+    "test": "echo \"Tests complete\""
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ira8296/api-powered-app/issues"
   },
-  "homepage": "https://github.com/ira8296/api-powered-app#readme"
+  "homepage": "https://github.com/ira8296/api-powered-app#readme",
+  "dependencies": {
+    "node-localstorage": "^2.1.6"
+  }
 }
