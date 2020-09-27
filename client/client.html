@@ -113,6 +113,8 @@
                     const obj = JSON.parse(xhr.response);
                     const result = xhr.response;
                     console.dir(obj);
+                    
+                    content.innerHTML = "";
 
                     let section = document.createElement("section");
                     section.className = "result";
