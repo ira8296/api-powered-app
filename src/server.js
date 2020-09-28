@@ -52,8 +52,7 @@ const onRequest = (request, response) => {
   console.log(request.url);
   const parsedUrl = url.parse(request.url);
   // const params = query.parse(parsedUrl.query);
-
-  if (request.method === 'GET' || request.method === 'HEAD') {
+  if (urlStruct[request.method][parsedUrl.pathname]) {
     urlStruct[request.method][parsedUrl.pathname](request, response);
   } else if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);

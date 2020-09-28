@@ -1,9 +1,8 @@
 const userKey = 'users';
 
-if (typeof localStorage === 'undefined' || localStorage === null) {
-  const { LocalStorage } = require('node-localstorage');
-  localStorage = new LocalStorage('./scratch');
-}
+const { LocalStorage } = require('node-localstorage');
+
+const localStorage = new LocalStorage('./scratch');
 
 const storedUsers = localStorage.getItem(userKey);
 
