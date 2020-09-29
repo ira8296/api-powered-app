@@ -2,12 +2,17 @@ html, body {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 15%;
 }
 
 #menu {
   text-align: center;
+  display: inline-block;
+  border: 1px solid gray;
+  width: 15%;
+  height: 100%;
+  padding: 2%;
   margin: 0 auto;
+  float: right;
 }
 
 #menu h1 {
@@ -15,9 +20,8 @@ html, body {
 }
 
 #content {
-  margin-top: 100px;
+  margin-top: 0;
   font-size: 2em;
-  text-align: center;
 }
 
 .section{
