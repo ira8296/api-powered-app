@@ -2,6 +2,9 @@ html, body {
   height: 100%;
   width: 100%;
   margin: 0;
+  background-image: url(../media/city.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #menu {
@@ -13,10 +16,17 @@ html, body {
   padding: 2%;
   margin: 0 auto;
   float: right;
+  background-image: linear-gradient(to right, aqua, blue);
+  color: white;
+  
 }
 
 #menu h1 {
   font-size: 2em;
+}
+
+#menu label, input, select, p {
+    margin: 1%;
 }
 
 #content {
