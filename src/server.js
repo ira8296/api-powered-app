@@ -14,7 +14,7 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getStyle,
     '/media/city.jpg': htmlHandler.getJPG,
-    '/index.php': htmlHandler.getPHP,
+    /* '/index.php': htmlHandler.getPHP, */
     '/getUsers': jsonHandler.getUsers,
     '/searchUsers': jsonHandler.search,
     '/notReal': jsonHandler.notReal,
@@ -54,7 +54,7 @@ const onRequest = (request, response) => {
   console.log(request.url);
   const parsedUrl = url.parse(request.url);
   // const params = query.parse(parsedUrl.query);
-  if (urlStruct[request.method][parsedUrl.pathname]) {
+  if (request.method === 'GET' || request.method === 'HEAD') {
     urlStruct[request.method][parsedUrl.pathname](request, response);
   } else if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);

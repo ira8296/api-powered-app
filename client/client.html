@@ -131,9 +131,9 @@
                             age.innerHTML = `<h6>Age: </h6> ` + results[r].age;
                             let powers = document.createElement("b");
                             powers.innerHTML = `<h6>Powers: </h6> ` + results[r].power1 + ", " + results[r].power2;
-                            let image = results[r].image;
+                            //let image = results[r].image;
                             
-                            section.appendChild(image);
+                            //section.appendChild(image);
                             section.appendChild(title);
                             section.appendChild(identity);
                             section.appendChild(age);
@@ -153,9 +153,9 @@
                             age.innerHTML = `<h6>Age: </h6> ` + result.age;
                             let powers = document.createElement("b");
                             powers.innerHTML = `<h6>Powers: </h6> ` + result.power1 + ", " + result.power2;
-                            let image = result.image;
+                            //let image = result.image;
                             
-                            section.appendChild(image);
+                            //section.appendChild(image);
                             section.appendChild(title);
                             section.appendChild(identity);
                             section.appendChild(age);
@@ -219,7 +219,7 @@
 
                 const nameField = nameForm.querySelector('#nameField');
                 const heroField = nameForm.querySelector('#heroField');
-                const imgField = document.querySelector("#fileDrop");
+                //const imgField = document.querySelector("#fileDrop");
                 const ageField = nameForm.querySelector('#ageField');
                 const powerSelect1 = nameForm.querySelector('#powerSelect1');
                 const powerSelect2 = nameForm.querySelector('#powerSelect2');
@@ -232,10 +232,10 @@
 
                 xhr.onload = () => reponseHandler(xhr, true);
                 
-                let img = document.createElement("img");
-                img.src = imgField.value;
+                /*let img = document.createElement("img");
+                img.src = imgField.value;*/
 
-                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}&image=${img}`;
+                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}`;
                 xhr.send(formData);
 
                 return false;
@@ -261,10 +261,10 @@
     <body>
         <section id="menu">
             <h1>Hero Central</h1>
-            <form enctype="multipart/form-data" action="index.php" method="post">
+            <!--<form enctype="multipart/form-data" action="/index.php" method="post">
                   Choose Hero Image: <input name="userFile" type="file" id="fileDrop">
                   <input type="submit" value="Upload">
-            </form>
+            </form>-->
             <form id="nameForm" action="/addUser" method="post">
               <label for="hero">Hero Name: </label>
               <input id="heroField" type="text" name="hero" />
