@@ -13,7 +13,8 @@ const urlStruct = {
   GET: {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getStyle,
-    'index.php': htmlHandler.getPHP,
+    '/media/city.jpg': htmlHandler.getJPG,
+    '/index.php': htmlHandler.getPHP,
     '/getUsers': jsonHandler.getUsers,
     '/searchUsers': jsonHandler.search,
     '/notReal': jsonHandler.notReal,

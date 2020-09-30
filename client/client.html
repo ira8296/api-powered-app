@@ -116,9 +116,6 @@
                     console.dir(obj);
                     
                     content.innerHTML = "";
-
-                    let section = document.createElement("section");
-                    section.className = "result";
                     
                     for(let r of result){
                         let type = typeof results[r];
@@ -264,6 +261,10 @@
     <body>
         <section id="menu">
             <h1>Hero Central</h1>
+            <form enctype="multipart/form-data" action="index.php" method="post">
+                  Choose Hero Image: <input name="userFile" type="file" id="fileDrop">
+                  <input type="submit" value="Upload">
+            </form>
             <form id="nameForm" action="/addUser" method="post">
               <label for="hero">Hero Name: </label>
               <input id="heroField" type="text" name="hero" />
@@ -277,10 +278,6 @@
               <label for="mainPower">Main Power: </label>
               <select id="powerSelect2" name="mainPower">
               </select>
-              <form enctype="multipart/form-data" action="index.php" method="post">
-                  Choose Hero Image: <input name="userFile" type="file" id="fileDrop">
-                  <input type="submit" value="Upload">
-              </form>
               <input type="submit" value="Add User" />
             </form>
             <form id="userForm" action="/getUsers" method="get">
