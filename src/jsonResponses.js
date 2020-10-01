@@ -1,16 +1,16 @@
-const userKey = 'users';
+// const userKey = 'users';
 
-const { LocalStorage } = require('node-localstorage');
+/* const { LocalStorage } = require('node-localstorage');
 
 const localStorage = new LocalStorage('./scratch');
 
 const storedUsers = localStorage.getItem(userKey);
 
-let users = {};
-
 if (storedUsers) {
   users = storedUsers;
-}
+} */
+
+const users = {};
 
 const respondJSON = (request, response, status, object) => {
   const headers = {
@@ -37,7 +37,7 @@ const respondJSONMeta = (request, response, status) => {
 };
 
 const addUser = (request, response, params) => {
-  const newUser = {};
+  // const newUser = {};
 
   let responseCode = 201;
 
@@ -49,18 +49,10 @@ const addUser = (request, response, params) => {
     return respondJSON(request, response, 400, responseJSON);
   }
   if (users[params.realName]) {
-    users[params.realName] = {};
-    users[params.realName].realName = params.realName;
-    users[params.realName].heroName = params.heroName;
-    users[params.realName].age = params.age;
-    users[params.realName].power1 = params.power1;
-    users[params.realName].power2 = params.power2;
-    if (params.image) {
-      users[params.realName].image = params.image;
-    }
     responseCode = 204;
   } else {
-    newUser.realName = params.realName;
+    users[params.realName] = {};
+    /* newUser.realName = params.realName;
     newUser.heroName = params.heroName;
     newUser.age = params.age;
     newUser.power1 = params.power1;
@@ -69,10 +61,19 @@ const addUser = (request, response, params) => {
       newUser.image = params.image;
     }
     newUser.message = 'Created successfully';
-    users[params.name] = newUser;
+    users[params.name] = newUser; */
   }
-  localStorage.setItem(userKey, users);
-  return respondJSON(request, response, responseCode, newUser);
+  users[params.realName] = {};
+  users[params.realName].realName = params.realName;
+  users[params.realName].heroName = params.heroName;
+  users[params.realName].age = params.age;
+  users[params.realName].power1 = params.power1;
+  users[params.realName].power2 = params.power2;
+  if (params.image) {
+    users[params.realName].image = params.image;
+  }
+  // localStorage.setItem(userKey, users);
+  return respondJSON(request, response, responseCode, users[params.realName]);
 };
 
 const getUsers = (request, response) => {

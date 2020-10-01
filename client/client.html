@@ -110,27 +110,27 @@
                 }
 
                 if(parseResponse) {
-                    const obj = JSON.parse(xhr.response);
-                    const results = xhr.response;
+                    //const obj = JSON.parse(xhr.response);
+                    const results = JSON.parse(xhr.response);
                     let result = Object.keys(results);
-                    console.dir(obj);
+                    console.dir(results);
                     
                     content.innerHTML = "";
                     
                     for(let r of result){
                         let type = typeof results[r];
                         if(type == "object"){
-                            let section = document.createElement("section");
+                            let section = document.createElement("response");
                             section.className = "result";
                             
                             let title = document.createElement("h4");
                             title.innerHTML = results[r].heroName;
-                            let identity = document.createElement("b");
-                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + results[r].realName;
-                            let age = document.createElement("b");
-                            age.innerHTML = `<h6>Age: </h6> ` + results[r].age;
-                            let powers = document.createElement("b");
-                            powers.innerHTML = `<h6>Powers: </h6> ` + results[r].power1 + ", " + results[r].power2;
+                            let identity = document.createElement("p");
+                            identity.innerHTML = `<em>Secret Identity: </em> ` + results[r].realName;
+                            let age = document.createElement("p");
+                            age.innerHTML = `<em>Age: </em> ` + results[r].age;
+                            let powers = document.createElement("p");
+                            powers.innerHTML = `<em>Powers: </em> ` + results[r].power1 + ", " + results[r].power2;
                             //let image = results[r].image;
                             
                             //section.appendChild(image);
@@ -142,18 +142,18 @@
                             content.appendChild(section);
                         }
                         else{
-                            let section = document.createElement("section");
+                            let section = document.createElement("response");
                             section.className = "result";
                             
                             let title = document.createElement("h4");
-                            title.innerHTML = result.heroName;
-                            let identity = document.createElement("b");
-                            identity.innerHTML = `<h6>Secret Identity: </h6> ` + result.realName;
-                            let age = document.createElement("b");
-                            age.innerHTML = `<h6>Age: </h6> ` + result.age;
-                            let powers = document.createElement("b");
-                            powers.innerHTML = `<h6>Powers: </h6> ` + result.power1 + ", " + result.power2;
-                            //let image = result.image;
+                            title.innerHTML = results[r].heroName;
+                            let identity = document.createElement("p");
+                            identity.innerHTML = `<em>Secret Identity: </em> ` + results[r].realName;
+                            let age = document.createElement("p");
+                            age.innerHTML = `<em>Age: </em> ` + results[r].age;
+                            let powers = document.createElement("p");
+                            powers.innerHTML = `<em>Powers: </em> ` + results[r].power1 + ", " + results[r].power2;
+                            //let image = results[r].image;
                             
                             //section.appendChild(image);
                             section.appendChild(title);
@@ -219,7 +219,7 @@
 
                 const nameField = nameForm.querySelector('#nameField');
                 const heroField = nameForm.querySelector('#heroField');
-                //const imgField = document.querySelector("#fileDrop");
+                const imgField = document.querySelector("#imgField");
                 const ageField = nameForm.querySelector('#ageField');
                 const powerSelect1 = nameForm.querySelector('#powerSelect1');
                 const powerSelect2 = nameForm.querySelector('#powerSelect2');
@@ -232,8 +232,8 @@
 
                 xhr.onload = () => reponseHandler(xhr, true);
                 
-                /*let img = document.createElement("img");
-                img.src = imgField.value;*/
+                let img = document.createElement("img");
+                img.src = imgField.value;
 
                 const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}`;
                 xhr.send(formData);
@@ -272,12 +272,14 @@
               <input id="nameField" type="text" name="name" />
               <label for="age">Age: </label>
               <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-              <label for="supportPower">Support Power: </label>
+              <label for="supportPower">Support Power:</label>
               <select id="powerSelect1" name="supportPower">
               </select>
-              <label for="mainPower">Main Power: </label>
+              <label for="mainPower">Main Power:</label>
               <select id="powerSelect2" name="mainPower">
               </select>
+              <label for="imageURL">Enter URL for hero image:</label>
+              <input id="imgField" type="text" value="" name="imageURL">
               <input type="submit" value="Add User" />
             </form>
             <form id="userForm" action="/getUsers" method="get">
