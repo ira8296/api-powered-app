@@ -14,7 +14,6 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getStyle,
     '/media/city.jpg': htmlHandler.getJPG,
-    /* '/index.php': htmlHandler.getPHP, */
     '/getUsers': jsonHandler.getUsers,
     '/searchUsers': jsonHandler.search,
     '/notReal': jsonHandler.notReal,
