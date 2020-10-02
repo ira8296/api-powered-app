@@ -52,11 +52,10 @@ const handlePost = (request, response, parsedUrl) => {
 const onRequest = (request, response) => {
   console.log(request.url);
   const parsedUrl = url.parse(request.url);
-  // const params = query.parse(parsedUrl.query);
-  if (request.method === 'GET' || request.method === 'HEAD') {
-    urlStruct[request.method][parsedUrl.pathname](request, response);
-  } else if (request.method === 'POST') {
+  if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
+  } else if (urlStruct[request.method][parsedUrl.pathname]) {
+    urlStruct[request.method][parsedUrl.pathname](request, response);
   } else {
     urlStruct[request.method].notFound(request, response);
   }

@@ -85,8 +85,8 @@
             }, false);*/
 
             const reponseHandler = (xhr, parseResponse) => {
-            const status = document.querySelector("#message");
-            const content = document.querySelector("#content");
+                const status = document.querySelector("#message");
+                const content = document.querySelector("#content");
 
                 switch(xhr.status) {
                     case 200:
@@ -142,7 +142,7 @@
                             content.appendChild(section);
                         }
                         else{
-                            let section = document.createElement("response");
+                            let section = document.createElement("section");
                             section.className = "result";
                             
                             let title = document.createElement("h4");
