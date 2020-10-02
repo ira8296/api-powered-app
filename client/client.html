@@ -115,7 +115,7 @@
                     let result = Object.keys(results);
                     console.dir(results);
                     
-                    content.innerHTML = "";
+                    content.innerHTML = " ";
                     
                     for(let r of result){
                         let type = typeof results[r];
@@ -152,9 +152,9 @@
                             age.innerHTML = `<em>Age: </em> ` + results[r].age;
                             let powers = document.createElement("p");
                             powers.innerHTML = `<em>Powers: </em> ` + results[r].power1 + ", " + results[r].power2;
-                            //let image = results[r].image;
+                            let image = results[r].image;
                             
-                            //section.appendChild(image);
+                            section.appendChild(image);
                             section.appendChild(title);
                             section.appendChild(identity);
                             section.appendChild(age);

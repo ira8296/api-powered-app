@@ -42,3 +42,8 @@ html, body {
     background-color: orange;
     margin: 30%;
 }
+
+.result img{
+    width: 50%;
+    height: 80%;
+}
