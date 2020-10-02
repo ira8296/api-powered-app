@@ -35,8 +35,8 @@ html, body {
 }
 
 .result{
-    width: 85%;
-    height: 90%;
+    width: 25%;
+    height: 30%;
     font-size: 30%;
     border: 1px solid gray;
     background-color: orange;

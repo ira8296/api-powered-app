@@ -72,8 +72,12 @@ const addUser = (request, response, params) => {
   if (params.image) {
     users[params.realName].image = params.image;
   }
+
+  const responseData = {
+    user: users[params.realName],
+  };
   // localStorage.setItem(userKey, users);
-  return respondJSON(request, response, responseCode, users[params.realName]);
+  return respondJSON(request, response, responseCode, responseData);
 };
 
 const getUsers = (request, response) => {
