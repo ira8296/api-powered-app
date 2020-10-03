@@ -146,21 +146,21 @@
                             
                             let title = document.createElement("h4");
                             title.innerHTML = results[r].heroName;
-                            let identity = document.createElement("p");
-                            identity.innerHTML = `<em>Secret Identity: </em> ` + results[r].realName;
-                            let age = document.createElement("p");
-                            age.innerHTML = `<em>Age: </em> ` + results[r].age;
-                            let powers = document.createElement("p");
-                            powers.innerHTML = `<em>Powers: </em> ` + results[r].power1 + ", " + results[r].power2;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                            let age = document.createElement("div");
+                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
                             let image = results[r].image;
                             
+                            content.appendChild(section);
                             section.appendChild(image);
                             section.appendChild(title);
-                            section.appendChild(identity);
+                            section.appendChild(alias);
                             section.appendChild(age);
                             section.appendChild(powers);
                             
-                            content.appendChild(section);
                             return;
                         }
                     }
