@@ -146,12 +146,37 @@
                             
                             let title = document.createElement("h4");
                             title.innerHTML = results[r].heroName;
-                            let alias = document.createElement("li");
+                            let alias = document.createElement("div");
                             alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
                             //console.log(alias);
-                            let age = document.createElement("li");
+                            let age = document.createElement("div");
                             age.innerHTML = `<b>Age: </b> ` + results[r].age;
-                            let powers = document.createElement("li");
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
+                            
+                            content.appendChild(section);
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(alias);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            
+                            //return;
+                        }
+                        else{
+                            let section = document.createElement("section");
+                            section.className = "result";
+                            
+                            let title = document.createElement("h4");
+                            title.innerHTML = results[r].heroName;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                            //console.log(alias);
+                            let age = document.createElement("div");
+                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                            let powers = document.createElement("div");
                             powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
                             let image = document.createElement("img");
                             image.src = results[r].image;

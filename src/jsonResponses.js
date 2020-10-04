@@ -1,16 +1,18 @@
-// const userKey = 'users';
+/* const userKey = 'users';
 
-/* const { LocalStorage } = require('node-localstorage');
+const { LocalStorage } = require('node-localstorage');
 
 const localStorage = new LocalStorage('./scratch');
 
-const storedUsers = localStorage.getItem(userKey);
-
-if (storedUsers) {
-  users = storedUsers;
-} */
+const storedUsers = localStorage.getItem(userKey); */
 
 const users = {};
+
+/* if (storedUsers) {
+  users = storedUsers;
+} else {
+  users = {};
+} */
 
 const respondJSON = (request, response, status, object) => {
   const headers = {
