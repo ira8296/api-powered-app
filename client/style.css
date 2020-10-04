@@ -34,6 +34,8 @@ html, body {
   margin-bottom: 0;
   margin-top: 0;
   position: fixed;
+  align-self: center;
+  align-content: center;
   height: 100%;
   width: 85%;
   z-index: 1;
@@ -47,6 +49,8 @@ html, body {
     background-color: orange;
     margin: 30%;
     padding: 1%;
+    float: right;
+    display: table-cell;
 }
 
 .result img{
