@@ -146,13 +146,15 @@
                             
                             let title = document.createElement("h4");
                             title.innerHTML = results[r].heroName;
-                            let alias = document.createElement("div");
+                            let alias = document.createElement("li");
                             alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
-                            let age = document.createElement("div");
+                            //console.log(alias);
+                            let age = document.createElement("li");
                             age.innerHTML = `<b>Age: </b> ` + results[r].age;
-                            let powers = document.createElement("div");
+                            let powers = document.createElement("li");
                             powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
-                            let image = results[r].image;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
                             
                             content.appendChild(section);
                             section.appendChild(image);
@@ -231,10 +233,9 @@
 
                 xhr.onload = () => reponseHandler(xhr, true);
                 
-                let img = document.createElement("img");
-                img.src = imgField.value;
+                let img = imgField.value;
 
-                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}`;
+                const formData = `realName=${nameField.value}&heroName=${heroField.value}&age=${ageField.value}&power1=${powerSelect1.value}&power2=${powerSelect2.value}&image=${img}`;
                 xhr.send(formData);
 
                 return false;
