@@ -5,6 +5,7 @@ html, body {
   background-image: url(../media/city.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: -1;
 }
 
 #menu {
@@ -18,6 +19,7 @@ html, body {
   float: right;
   background-image: linear-gradient(to right, aqua, blue);
   color: white;
+  z-index: 0;
 }
 
 #menu h1 {
@@ -34,6 +36,7 @@ html, body {
   position: fixed;
   height: 100%;
   width: 85%;
+  z-index: 1;
 }
 
 .result{

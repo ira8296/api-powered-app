@@ -65,25 +65,6 @@
                 powerSelectII.appendChild(option);
             }
 
-           /* function uploadFile(file){
-                var url = '../src/index.php';
-                var xhr = new XMLHttpRequest();
-                var fd = new FormData();
-                xhr.open("POST", url, true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        // Every thing ok, file uploaded
-                        console.log(xhr.responseText); // handle response.
-                    }
-                };
-                fd.append("upload_file", file);
-                xhr.send(fd);
-            }
-
-            document.querySelector("#fileDrop").addEventListener('change', function(){
-                uploadFile(this.File);
-            }, false);*/
-
             const reponseHandler = (xhr, parseResponse) => {
                 const status = document.querySelector("#message");
                 const content = document.querySelector("#content");
@@ -120,27 +101,6 @@
                     for(let r of result){
                         let type = typeof results[r];
                         if(type == "object"){
-                            /*let section = document.createElement("section");
-                            section.className = "result";
-                            
-                            let title = document.createElement("h4");
-                            title.innerHTML = results[r].heroName;
-                            let identity = document.createElement("p");
-                            identity.innerHTML = `<em>Secret Identity: </em> ` + results[r].realName;
-                            let age = document.createElement("p");
-                            age.innerHTML = `<em>Age: </em> ` + results[r].age;
-                            let powers = document.createElement("p");
-                            powers.innerHTML = `<em>Powers: </em> ` + results[r].power1 + ", " + results[r].power2;
-                            //let image = results[r].image;
-                            
-                            //section.appendChild(image);
-                            section.appendChild(title);
-                            section.appendChild(identity);
-                            section.appendChild(age);
-                            section.appendChild(powers);
-                            
-                            content.appendChild(section);*/
-                            
                             let section = document.createElement("section");
                             section.className = "result";
                             
@@ -286,10 +246,6 @@
     <body>
         <section id="menu">
             <h1>Hero Central</h1>
-            <!--<form enctype="multipart/form-data" action="/index.php" method="post">
-                  Choose Hero Image: <input name="userFile" type="file" id="fileDrop">
-                  <input type="submit" value="Upload">
-            </form>-->
             <form id="nameForm" action="/addUser" method="post">
               <label for="hero">Hero Name: </label>
               <input id="heroField" type="text" name="hero" />
