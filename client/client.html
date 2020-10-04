@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         <title>Hero Central</title>
+        <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Bungee Shade' rel='stylesheet'>
         <link rel="stylesheet" type="text/css" href="./style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script type="text/babel">
@@ -68,6 +70,10 @@
             const reponseHandler = (xhr, parseResponse) => {
                 const status = document.querySelector("#message");
                 const content = document.querySelector("#content");
+                const nameField = nameForm.querySelector('#nameField');
+                const heroField = nameForm.querySelector('#heroField');
+                const imgField = document.querySelector("#imgField");
+                const ageField = nameForm.querySelector('#ageField');
 
                 switch(xhr.status) {
                     case 200:
@@ -96,6 +102,10 @@
                     let result = Object.keys(results);
                     console.dir(results);
                     
+                    nameField.value = " ";
+                    heroField.value = " ";
+                    imgField.value = " ";
+                    ageField.value = " ";
                     content.innerHTML = " ";
                     
                     for(let r of result){
@@ -132,12 +142,12 @@
                             let title = document.createElement("h4");
                             title.innerHTML = results[r].heroName;
                             let alias = document.createElement("div");
-                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                            alias.innerHTML = `Secret Identity: ` + results[r].realName;
                             //console.log(alias);
                             let age = document.createElement("div");
-                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                            age.innerHTML = `Age: ` + results[r].age;
                             let powers = document.createElement("div");
-                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
+                            powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
                             let image = document.createElement("img");
                             image.src = results[r].image;
                             
