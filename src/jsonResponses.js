@@ -90,6 +90,56 @@ const getUsers = (request, response) => {
 
 const getUsersMeta = (request, response) => respondJSONMeta(request, response, 200);
 
+const getPowers = (request, response) => {
+  const primaryPowers = ['Superstrength',
+    'Speed',
+    'Durability',
+    'Agility/reflexes',
+    'Healing/regeneration',
+    'Supersenses'];
+
+  const secondaryPowers = ['Climbing/wall-crawling',
+    'Swimming/water-breathing',
+    'Flight',
+    'Teleportation',
+    'Exceptional leaping',
+    'Phasing/intangibility',
+    'Temporal manipulation',
+    'Time travel',
+    'Prophecy',
+    'Basic elements (fire, water and/or ice, earth, wind)',
+    'Electricity',
+    'Light',
+    'Darkness and/or shadows',
+    'Gravity',
+    'Magnetic forces',
+    'Radiation',
+    'Energy',
+    'Sound',
+    'Nature',
+    'Psychic',
+    'Acid/poison',
+    'Controlling plants and/or animals',
+    'Shapeshifting (animals)',
+    'Shapeshifting (people)',
+    'Elasticity',
+    'Self-destruction',
+    'Self-liquification',
+    'Gaseous form',
+    'Growth/shrinking',
+    'Self-duplication',
+    'Invisibility',
+    'Absorbing someone else’s powers',
+    'Negating someone else’s powers',
+    'Luck manipulation',
+    'Illusions'];
+  const powers = {
+    support: primaryPowers,
+    main: secondaryPowers,
+  };
+  return respondJSON(request, response, 200, powers);
+};
+
 const search = (request, response, input) => {
   let responseCode = 200;
   const results = {};
@@ -145,4 +195,5 @@ module.exports = {
   notRealMeta,
   notFound,
   notFoundMeta,
+  getPowers,
 };

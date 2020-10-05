@@ -37,6 +37,7 @@ html, body {
   margin-top: 0;
   position: fixed;
   align-self: center;
+  display: flex;
   height: 100%;
   width: 85%;
   z-index: 0;
@@ -48,10 +49,10 @@ html, body {
     font-size: 60%;
     border: 1px solid gray;
     background-color: orange;
-    margin: 30%;
+    margin: 5%;
     padding: 1%;
     float: right;
-    display: block;
+    display: table-cell;
     position: relative;
     z-index: 1;
     font-family: sans-serif;

@@ -7,65 +7,38 @@
         <link rel="stylesheet" type="text/css" href="./style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script type="text/babel">
-            let primaryPowers = ["Superstrength",
-                                "Speed",
-                                "Durability",
-                                "Agility/reflexes",
-                                "Healing/regeneration",
-                                "Supersenses"];
 
-            let secondaryPowers = ["Climbing/wall-crawling",
-                                   "Swimming/water-breathing",
-                                   "Flight",
-                                   "Teleportation",
-                                   "Exceptional leaping",
-                                   "Phasing/intangibility",
-                                   "Temporal manipulation",
-                                   "Time travel",
-                                   "Prophecy",
-                                   "Basic elements (fire, water and/or ice, earth, wind)",
-                                   "Electricity",
-                                   "Light",
-                                   "Darkness and/or shadows",
-                                   "Gravity",
-                                   "Magnetic forces",
-                                   "Radiation",
-                                   "Energy",
-                                   "Sound",
-                                   "Nature",
-                                   "Psychic",
-                                   "Acid/poison",
-                                   "Controlling plants and/or animals",
-                                   "Shapeshifting (animals)",
-                                   "Shapeshifting (people)",
-                                   "Elasticity",
-                                   "Self-destruction",
-                                   "Self-liquification",
-                                   "Gaseous form",
-                                   "Growth/shrinking",
-                                   "Self-duplication",
-                                   "Invisibility",
-                                   "Absorbing someone else’s powers",
-                                   "Negating someone else’s powers",
-                                   "Luck manipulation",
-                                    "Illusions"];
+            const setupHTML = (xhr) => {
+                let powerSelectI = document.querySelector("#powerSelect1");
+                let powerSelectII = document.querySelector("#powerSelect2");
+                
+                const options = JSON.parse(xhr.response);
+                let option = Object.keys(options);
+                
+                let primaryPowers, secondaryPowers = [];
+                for(let o of option){
+                    if(o == "support"){
+                        primaryPowers = options[o];
+                    }
+                    else{
+                        secondaryPowers = options[o];
+                    }
+                }
+                
+                for(let p of primaryPowers){
+                    let option = document.createElement("option");
+                    option.value = p;
+                    option.innerHTML = p;
+                    powerSelectI.appendChild(option);
+                }
 
-            let powerSelectI = document.querySelector("#powerSelect1");
-            let powerSelectII = document.querySelector("#powerSelect2");
-
-            for(let p of primaryPowers){
-                let option = document.createElement("option");
-                option.value = p;
-                option.innerHTML = p;
-                powerSelectI.appendChild(option);
-            }
-
-            for(let p of secondaryPowers){
-                let option = document.createElement("option");
-                option.value = p;
-                option.innerHTML = p;
-                powerSelectII.appendChild(option);
-            }
+                for(let p of secondaryPowers){
+                    let option = document.createElement("option");
+                    option.value = p;
+                    option.innerHTML = p;
+                    powerSelectII.appendChild(option);
+                }
+            };
 
             const reponseHandler = (xhr, parseResponse) => {
                 const status = document.querySelector("#message");
@@ -235,6 +208,14 @@
             };
 
             const init = () => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("get", "/start");
+                xhr.setRequestHeader('Accept', 'application/json');
+                
+                xhr.onload = () => setupHTML(xhr);
+                
+                xhr.send();
+                
                 const nameForm = document.querySelector("#nameForm");
                 const userForm = document.querySelector("#userForm");
                 const searchForm = document.querySelector("#searchForm");
