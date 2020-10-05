@@ -126,14 +126,12 @@
                             let image = document.createElement("img");
                             image.src = results[r].image;
                             
-                            content.appendChild(section);
                             section.appendChild(image);
                             section.appendChild(title);
                             section.appendChild(alias);
                             section.appendChild(age);
                             section.appendChild(powers);
-                            
-                            //return;
+                            content.appendChild(section);
                         }
                         else{
                             let section = document.createElement("section");
@@ -151,12 +149,12 @@
                             let image = document.createElement("img");
                             image.src = results[r].image;
                             
-                            content.appendChild(section);
                             section.appendChild(image);
                             section.appendChild(title);
                             section.appendChild(alias);
                             section.appendChild(age);
                             section.appendChild(powers);
+                            content.appendChild(section);
                             
                             return;
                         }
