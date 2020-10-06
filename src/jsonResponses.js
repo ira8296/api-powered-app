@@ -1,22 +1,26 @@
-/* const userKey = 'users';
+/*
 
 const { LocalStorage } = require('node-localstorage');
 
 const localStorage = new LocalStorage('./scratch');
 
 const storedUsers = localStorage.getItem(userKey); */
+const userKey = 'users';
+
 const Datastore = require('nedb');
 
 const database = new Datastore('./database.db');
 database.loadDatabase();
 
-const users = {};
+const storedUsers = database.findOne({ _id: userKey });
 
-/* if (storedUsers) {
+let users;
+
+if (storedUsers) {
   users = storedUsers;
 } else {
-  users = {};
-} */
+  users = { _id: userKey };
+}
 
 // Sends back JSON object and status code depending on the type of process it's used for
 const respondJSON = (request, response, status, object) => {
@@ -58,7 +62,7 @@ const addUser = (request, response, params) => {
       message: 'Names, age, and/or powers are required',
     };
     return respondJSON(request, response, 400, responseJSON);
-  } // Checks if the users object already has a user with the same index as params
+  } // Checks if the users object already has a user with the same key as params
   if (users[params.realName]) {
     responseCode = 204;
   } else {
@@ -83,7 +87,11 @@ const addUser = (request, response, params) => {
     user: users[params.realName],
   };
 
-  database.insert(users);
+  database.update({ _id: userKey }, users, {}, (err) => {
+    if (err) {
+      database.insert(users);
+    }
+  });
 
   // Sends back JSON object and response code
   return respondJSON(request, response, responseCode, responseData);
