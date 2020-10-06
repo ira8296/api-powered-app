@@ -5,7 +5,10 @@ const { LocalStorage } = require('node-localstorage');
 const localStorage = new LocalStorage('./scratch');
 
 const storedUsers = localStorage.getItem(userKey); */
-var admin = require('firebase-admin');
+const Datastore = require('nedb');
+
+const database = new Datastore('./database.db');
+database.loadDatabase();
 
 const users = {};
 
@@ -15,7 +18,7 @@ const users = {};
   users = {};
 } */
 
-//Sends back JSON object and status code depending on the type of process it's used for
+// Sends back JSON object and status code depending on the type of process it's used for
 const respondJSON = (request, response, status, object) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -31,7 +34,7 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
-//Same as respondJSON, but only sends back status code, no JSON object
+// Same as respondJSON, but only sends back status code, no JSON object
 const respondJSONMeta = (request, response, status) => {
   const headers = {
     'Content-Type': 'application/json',
@@ -42,27 +45,29 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
-//Creates a new user to be placed inside the users object
+// Creates a new user to be placed inside the users object
 const addUser = (request, response, params) => {
-  //The status code which is sent at the end of the process
+  // The status code which is sent at the end of the process
   let responseCode = 201;
-  
-  //Checks if the params object has the following parameters, and sends an error message and 400 status code if not
+
+  // Checks if the params object has the following parameters
   if (!params.realName || !params.heroName || !params.age || !params.power1 || !params.power2) {
+    // Send JSON object with error message if not
     const responseJSON = {
       id: 'missingParams',
       message: 'Names, age, and/or powers are required',
     };
     return respondJSON(request, response, 400, responseJSON);
-  } //Checks if the users object already has a user with the same index as params
+  } // Checks if the users object already has a user with the same index as params
   if (users[params.realName]) {
     responseCode = 204;
   } else {
-    //A new index with the key of the params object's realName parameter in the users object is created with an empty value
+    // A new index in the users object is created with an empty value
+    // The realName property of the params object is used as the key
     users[params.realName] = {};
   }
-  
-  //Fills in  parameters for newly created user
+
+  // Fills in  parameters for newly created user
   users[params.realName] = {};
   users[params.realName].realName = params.realName;
   users[params.realName].heroName = params.heroName;
@@ -72,28 +77,29 @@ const addUser = (request, response, params) => {
   if (params.image) {
     users[params.realName].image = params.image;
   }
-    
-  //JSON object containing newly created user which is then sent back
+
+  // JSON object containing newly created user which is then sent back
   const responseData = {
     user: users[params.realName],
   };
-  // localStorage.setItem(userKey, users);
 
-  //Sends back JSON object and response code
+  database.insert(users);
+
+  // Sends back JSON object and response code
   return respondJSON(request, response, responseCode, responseData);
 };
 
-//Gets all of the listed users
+// Gets all of the listed users
 const getUsers = (request, response) => {
   const responseJSON = users;
 
   return respondJSON(request, response, 200, responseJSON);
 };
 
-//Same as getUsers, but only sends the status code
+// Same as getUsers, but only sends the status code
 const getUsersMeta = (request, response) => respondJSONMeta(request, response, 200);
 
-//Sends back JSON object containing lists of super powers to be placed in the dropdown
+// Sends back JSON object containing lists of super powers to be placed in the dropdown
 const getPowers = (request, response) => {
   const primaryPowers = ['Superstrength',
     'Speed',
@@ -144,7 +150,7 @@ const getPowers = (request, response) => {
   return respondJSON(request, response, 200, powers);
 };
 
-//Searches through the users object for any specific users based on the client's input
+// Searches through the users object for any specific users based on the client's input
 const search = (request, response, input) => {
   let responseCode = 200;
   const results = {};
@@ -167,7 +173,7 @@ const search = (request, response, input) => {
   return respondJSON(request, response, responseCode, results);
 };
 
-//Returns an error message stating that the requested data doesn't exist
+// Returns an error message stating that the requested data doesn't exist
 const notReal = (request, response) => {
   const responseJSON = {
     message: 'The data you are looking for does not exist',
@@ -176,12 +182,12 @@ const notReal = (request, response) => {
   respondJSON(request, response, 404, responseJSON);
 };
 
-//Same as notReal, but only sends the status code
+// Same as notReal, but only sends the status code
 const notRealMeta = (request, response) => {
   respondJSONMeta(request, response, 404);
 };
 
-//Returns an error message stating that the requested data could not be found
+// Returns an error message stating that the requested data could not be found
 const notFound = (request, response) => {
   const responseJSON = {
     message: 'The data you are looking for could not be found',
@@ -190,12 +196,12 @@ const notFound = (request, response) => {
   respondJSON(request, response, 404, responseJSON);
 };
 
-//Same as notFound, but only sends the status code
+// Same as notFound, but only sends the status code
 const notFoundMeta = (request, response) => {
   respondJSONMeta(request, response, 404);
 };
 
-//Exports all of the functions in jsonResponses to be used by any instance of it
+// Exports all of the functions in jsonResponses to be used by any instance of it
 module.exports = {
   addUser,
   getUsers,
