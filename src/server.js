@@ -7,8 +7,10 @@ const htmlHandler = require('./htmlResponses.js');
 // pull in our json response handler file
 const jsonHandler = require('./jsonResponses.js');
 
+//The port at which the program runs 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+//The logic which denotes what actions the server takes with the specific request method and url path  
 const urlStruct = {
   GET: {
     '/': htmlHandler.getIndex,
@@ -27,6 +29,7 @@ const urlStruct = {
   },
 };
 
+//Handles POST requests
 const handlePost = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === '/addUser') {
     const params = [];
@@ -50,6 +53,7 @@ const handlePost = (request, response, parsedUrl) => {
   }
 };
 
+//Logs out the request and decides what action to take, using the request and response as parameters
 const onRequest = (request, response) => {
   console.log(request.url);
   const parsedUrl = url.parse(request.url);
@@ -62,6 +66,8 @@ const onRequest = (request, response) => {
   }
 };
 
+//Initiates the server
 http.createServer(onRequest).listen(port);
 
+//Logs out where the server and/or program is running
 console.log(`Listening on 127.0.0.1: ${port}`);

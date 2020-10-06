@@ -2,19 +2,24 @@
 <html lang="en">
     <head>
         <title>Hero Central</title>
+        <!--Links to Google Fonts and css-->
         <link href='https://fonts.googleapis.com/css?family=Bangers' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Bungee Shade' rel='stylesheet'>
         <link rel="stylesheet" type="text/css" href="./style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script type="text/babel">
-
+            
+            //Sets up the super powers dropdown
             const setupHTML = (xhr) => {
+                //Instances of the dropdown elements
                 let powerSelectI = document.querySelector("#powerSelect1");
                 let powerSelectII = document.querySelector("#powerSelect2");
                 
+                //Takes the arrays returned from the server and gets the list of keys from them
                 const options = JSON.parse(xhr.response);
                 let option = Object.keys(options);
                 
+                //Creates two arrays and sets them equal to the arrays returned by the server
                 let primaryPowers, secondaryPowers = [];
                 for(let o of option){
                     if(o == "support"){
@@ -25,6 +30,7 @@
                     }
                 }
                 
+                //Creates options for the dropdown elements out of the superpower arrays
                 for(let p of primaryPowers){
                     let option = document.createElement("option");
                     option.value = p;
@@ -39,7 +45,8 @@
                     powerSelectII.appendChild(option);
                 }
             };
-
+            
+            //Takes any responses and data sent by the server and prints them to the screen
             const reponseHandler = (xhr, parseResponse) => {
                 const status = document.querySelector("#message");
                 const content = document.querySelector("#content");
@@ -70,7 +77,6 @@
                 }
 
                 if(parseResponse) {
-                    //const obj = JSON.parse(xhr.response);
                     const results = JSON.parse(xhr.response);
                     let result = Object.keys(results);
                     console.dir(results);
@@ -91,7 +97,6 @@
                             title.innerHTML = results[r].heroName;
                             let alias = document.createElement("div");
                             alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
-                            //console.log(alias);
                             let age = document.createElement("div");
                             age.innerHTML = `<b>Age: </b> ` + results[r].age;
                             let powers = document.createElement("div");
@@ -114,7 +119,6 @@
                             title.innerHTML = results[r].heroName;
                             let alias = document.createElement("div");
                             alias.innerHTML = `Secret Identity: ` + results[r].realName;
-                            //console.log(alias);
                             let age = document.createElement("div");
                             age.innerHTML = `Age: ` + results[r].age;
                             let powers = document.createElement("div");
@@ -132,11 +136,10 @@
                             return;
                         }
                     }
-                    
-                    
                 }
             };
-
+            
+            //Makes any GET or HEAD requests 
             const requestUpdate = (e, userForm) => {
                 const url = userForm.querySelector("#urlField").value;
                 const method = userForm.querySelector("#methodSelect").value;
@@ -160,7 +163,8 @@
 
                 return false;
             };
-
+            
+            //Handles any searching depending on the user input
             const requestSearch = (e, searchForm) => {
                 const input = searchForm.querySelector("input").value;
                 const searchMethod = searchForm.getAttribute('method');
@@ -178,6 +182,7 @@
                 return false;
             };
 
+            //Handles any POST requests
             const sendPost = (e, nameForm) => {
                 e.preventDefault();
 
@@ -207,6 +212,7 @@
                 return false;
             };
 
+            //Initializes the web page, hooking up events to the necessary page elements
             const init = () => {
                 const xhr = new XMLHttpRequest();
                 xhr.open("get", "/start");
@@ -229,12 +235,15 @@
                 searchForm.addEventListener('submit', searchUsers);
             };
 
+            //Calls the init function once the page loads
             window.onload = init;
         </script>
     </head>
     <body>
+        <!--The controls for the web page which allow for the user to interact with it-->
         <section id="menu">
             <h1>Hero Central</h1>
+            <!--The form which enables POST requests-->
             <form id="nameForm" action="/addUser" method="post">
               <label for="hero">Hero Name: </label>
               <input id="heroField" type="text" name="hero" />
@@ -252,6 +261,7 @@
               <input id="imgField" type="text" value="" name="imageURL">
               <input type="submit" value="Add Hero" />
             </form>
+            <!--The form which enables GET and HEAD requests-->
             <form id="userForm" action="/getUsers" method="get">
               <select id='urlField'>
                 <option value='/getUsers'>/getUsers</option>
@@ -263,11 +273,14 @@
               </select>
               <input type="submit" value="Show Heroes" />
             </form>
+            <!--The form which enables for searching through the API-->
             <form id="searchForm" action="/searchUsers" method="get">
                 <input type="text" value="Search for a hero">
                 <input type="submit" value="Search" />
             </form>
+            <!--Where the result of every process is written-->
             <p id="message"></p>
+        <!--Where the results are printed out-->
         </section>
         <section id="content">
         </section>

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ira8296/api-powered-app#readme",
   "dependencies": {
+    "firebase-admin": "^9.2.0",
     "node-localstorage": "^2.1.6"
   },
   "devDependencies": {
