@@ -1,12 +1,18 @@
+// The keyword used to save and load users
 const userKey = 'hero';
 
+// Pulling in the NeDB database
 const Datastore = require('nedb');
 
+// Instance of the database
 const database = new Datastore('./database.db');
+// Initializing the database
 database.loadDatabase();
 
+// The object containing all of the users
 const users = {};
 
+// Loading all of the users and storing them within the users object
 database.find({ occupation: userKey }, (err, docs) => {
   if (err) {
     console.dir(err);
@@ -16,13 +22,6 @@ database.find({ occupation: userKey }, (err, docs) => {
     }
   }
 });
-
-/* for (let i = 0; i < storedUsers.length; i++) {
-  const index = storedUsers[i].realName;
-  users[index] = storedUsers[i];
-} */
-
-// console.log(users);
 
 // Sends back JSON object and status code depending on the type of process it's used for
 const respondJSON = (request, response, status, object) => {
@@ -90,6 +89,8 @@ const addUser = (request, response, params) => {
     user: users[params.realName],
   };
 
+  // Checks to see whether database should be updated
+  // or new data inserted
   if (responseCode === 204) {
     database.update({ realName: params.realName }, users[params.realName], {});
   } else {
@@ -172,21 +173,22 @@ const getPowers = (request, response) => {
 };
 
 // Searches through the users object for any specific users based on the client's input
-const search = (request, response, input) => {
+const search = (request, response, param) => {
   let responseCode = 200;
   const results = {};
   const user = Object.keys(users);
 
+  // Loops through users to find any relevant users
+  // to be used as search results
   for (let u = 0; u < user.length; u++) {
-    const values = Object.values(users[u]);
-    for (let v = 0; v < values.length; v++) {
-      const value = values[v];
-      if (value === input) {
-        results[u] = users[u];
-      }
+    const index = user[u];
+    const current = users[index];
+    if (current.realName.includes(param.input) || current.heroName.includes(param.input)) {
+      results[index] = current;
     }
   }
 
+  // If there are no results, return 404 code
   if (results === {}) {
     responseCode = 404;
   }

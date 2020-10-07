@@ -168,14 +168,16 @@
             const requestSearch = (e, searchForm) => {
                 const input = searchForm.querySelector("input").value;
                 const searchMethod = searchForm.getAttribute('method');
+                const searchAction = searchForm.getAttribute('action');
                 
                 const xhr = new XMLHttpRequest();
                 
-                xhr.open(searchMethod, input);
+                xhr.open(searchMethod, searchAction);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.onload = () => reponseHandler(xhr, true);
                 
-                xhr.send();
+                const formData = `input=${input}`;
+                xhr.send(formData);
 
                 e.preventDefault();
                 
