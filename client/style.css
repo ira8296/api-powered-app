@@ -29,7 +29,15 @@ html, body {
 }
 
 #menu label, input, select, p {
-    margin: 1%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 3%;
+    margin-right: 4%;
+}
+
+#nameForm, #userForm, #searchForm, message {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 #content {
@@ -52,6 +60,7 @@ html, body {
     background-color: orange;
     margin: 4%;
     margin-bottom: 2%;
+    margin-top: 3%;
     padding: 1%;
     float: right;
     display: table-cell;

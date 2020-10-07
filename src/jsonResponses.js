@@ -7,14 +7,22 @@ database.loadDatabase();
 
 const users = {};
 
-const storedUsers = database.find({ occupation: userKey });
+database.find({ occupation: userKey }, (err, docs) => {
+  if (err) {
+    console.dir(err);
+  } else {
+    for (let d = 0; d < docs.length; d++) {
+      users[docs[d].realName] = docs[d];
+    }
+  }
+});
 
-for (let i = 0; i < storedUsers.length; i++) {
+/* for (let i = 0; i < storedUsers.length; i++) {
   const index = storedUsers[i].realName;
   users[index] = storedUsers[i];
-}
+} */
 
-console.log(users);
+// console.log(users);
 
 // Sends back JSON object and status code depending on the type of process it's used for
 const respondJSON = (request, response, status, object) => {
@@ -120,7 +128,11 @@ const getPowers = (request, response) => {
     'Temporal manipulation',
     'Time travel',
     'Prophecy',
-    'Basic elements (fire, water and/or ice, earth, wind)',
+    'Fire',
+    'Water',
+    'Ice',
+    'Earth',
+    'Wind',
     'Electricity',
     'Light',
     'Darkness and/or shadows',
@@ -132,7 +144,8 @@ const getPowers = (request, response) => {
     'Nature',
     'Psychic',
     'Acid/poison',
-    'Controlling plants and/or animals',
+    'Controlling plants',
+    'Controlling animals',
     'Shapeshifting (animals)',
     'Shapeshifting (people)',
     'Elasticity',
@@ -142,6 +155,11 @@ const getPowers = (request, response) => {
     'Growth/shrinking',
     'Self-duplication',
     'Invisibility',
+    'Cybernetics',
+    'Power Suit',
+    'Weapon(s) Specialist',
+    'Martial Arts',
+    'Regeneration',
     'Absorbing someone else’s powers',
     'Negating someone else’s powers',
     'Luck manipulation',
@@ -159,12 +177,11 @@ const search = (request, response, input) => {
   const results = {};
   const user = Object.keys(users);
 
-  for (let i = 0; i < user.length; i++) {
-    const u = user[i];
+  for (let u = 0; u < user.length; u++) {
     const values = Object.values(users[u]);
-    for (let n = 0; n < values.length; n++) {
-      const v = values[n];
-      if (v === input) {
+    for (let v = 0; v < values.length; v++) {
+      const value = values[v];
+      if (value === input) {
         results[u] = users[u];
       }
     }
