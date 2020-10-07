@@ -1,10 +1,3 @@
-/*
-
-const { LocalStorage } = require('node-localstorage');
-
-const localStorage = new LocalStorage('./scratch');
-
-const storedUsers = localStorage.getItem(userKey); */
 const userKey = 'hero';
 
 const Datastore = require('nedb');
@@ -12,16 +5,16 @@ const Datastore = require('nedb');
 const database = new Datastore('./database.db');
 database.loadDatabase();
 
-const storedUsers = database.find({ occupation: userKey });
-
 const users = {};
 
-if (storedUsers) {
-  for (let i = 0; i < storedUsers.length; i++) {
-    const index = storedUsers[i].realName;
-    users[index] = storedUsers[i];
-  }
+const storedUsers = database.find({ occupation: userKey });
+
+for (let i = 0; i < storedUsers.length; i++) {
+  const index = storedUsers[i].realName;
+  users[index] = storedUsers[i];
 }
+
+console.log(users);
 
 // Sends back JSON object and status code depending on the type of process it's used for
 const respondJSON = (request, response, status, object) => {

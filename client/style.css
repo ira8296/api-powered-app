@@ -38,6 +38,7 @@ html, body {
   position: fixed;
   align-self: center;
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 85%;
   z-index: 0;
@@ -49,7 +50,8 @@ html, body {
     font-size: 60%;
     border: 1px solid gray;
     background-color: orange;
-    margin: 5%;
+    margin: 4%;
+    margin-bottom: 2%;
     padding: 1%;
     float: right;
     display: table-cell;
@@ -62,4 +64,28 @@ html, body {
     width: 90%;
     height: 80%;
     margin: 3%;
+}
+
+#prevButton{
+    font-size: 60%;
+    border: 1px solid gray;
+    background-color: orange;
+    margin: 1%;
+    z-index: 2;
+    float: left;
+    font-family: sans-serif;
+    width: 5%;
+    height: 3%;
+}
+
+#nextButton{
+    font-size: 60%;
+    border: 1px solid gray;
+    background-color: orange;
+    margin: 1%;
+    z-index: 2;
+    float: right;
+    font-family: sans-serif;
+    width: 5%;
+    height: 3%;
 }

@@ -79,7 +79,7 @@
                 if(parseResponse) {
                     const results = JSON.parse(xhr.response);
                     let result = Object.keys(results);
-                    console.dir(results);
+                    //console.dir(results);
                     
                     nameField.value = " ";
                     heroField.value = " ";
@@ -282,11 +282,9 @@
             <p id="message"></p>
         <!--Where the results are printed out-->
         </section>
-        <section id="content">
-            <!--
             <button id="prevButton">Prev</button>
-            <button id="prevButton">Next</button>
-            -->
+            <button id="nextButton">Next</button>
+        <section id="content">
         </section>
     </body>
 </html>
