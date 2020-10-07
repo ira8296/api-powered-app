@@ -5,21 +5,22 @@ const { LocalStorage } = require('node-localstorage');
 const localStorage = new LocalStorage('./scratch');
 
 const storedUsers = localStorage.getItem(userKey); */
-const userKey = 'users';
+const userKey = 'hero';
 
 const Datastore = require('nedb');
 
 const database = new Datastore('./database.db');
 database.loadDatabase();
 
-const storedUsers = database.findOne({ _id: userKey });
+const storedUsers = database.find({ occupation: userKey });
 
-let users;
+const users = {};
 
 if (storedUsers) {
-  users = storedUsers;
-} else {
-  users = { _id: userKey };
+  for (let i = 0; i < storedUsers.length; i++) {
+    const index = storedUsers[i].realName;
+    users[index] = storedUsers[i];
+  }
 }
 
 // Sends back JSON object and status code depending on the type of process it's used for
@@ -73,6 +74,7 @@ const addUser = (request, response, params) => {
 
   // Fills in  parameters for newly created user
   users[params.realName] = {};
+  users[params.realName].occupation = userKey;
   users[params.realName].realName = params.realName;
   users[params.realName].heroName = params.heroName;
   users[params.realName].age = params.age;
@@ -87,11 +89,11 @@ const addUser = (request, response, params) => {
     user: users[params.realName],
   };
 
-  database.update({ _id: userKey }, users, {}, (err) => {
-    if (err) {
-      database.insert(users);
-    }
-  });
+  if (responseCode === 204) {
+    database.update({ realName: params.realName }, users[params.realName], {});
+  } else {
+    database.insert(users[params.realName]);
+  }
 
   // Sends back JSON object and response code
   return respondJSON(request, response, responseCode, responseData);
