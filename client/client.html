@@ -11,14 +11,13 @@
             const prevButton = document.querySelector("#prevButton");
             const nextButton = document.querySelector("#nextButton");
             const searchLimit = 6;
-            //let offset = 0;
             let length = 0;
             let pages = 0;
             let pageList = [];
             let current = 1;
             let heroes;
 
-            //Sets up the super powers dropdown
+            //Sets up the super powers dropdown and page buttons
             const setupHTML = (xhr) => {
                 //Instances of the dropdown elements
                 let powerSelectI = document.querySelector("#powerSelect1");
@@ -53,26 +52,34 @@
                     option.innerHTML = p;
                     powerSelectII.appendChild(option);
                 }
+                
+                prevButton.style.visibility = "hidden";
+                prevButton.disabled = true;
+                nextButton.style.visibility = "hidden";
+                nextButton.disabled = true;
             };
             
             //Gets the number of pages
             function getPages() {
                 return Math.ceil(length / searchLimit);
             }
-
+            
+            //Gets previous page
             function prevPage() {
                 console.log("clicked");
                 current -= 1;
                 loadResults();
             }
             
+            //Gets next page
             function nextPage() {
                 console.log("clicked");
                 current += 1;
                 loadResults();
             }
             
-
+            
+            //Updates pages and loads the results
             function loadResults() {
                 var begin = ((current - 1) * searchLimit);
                 var end = begin + searchLimit;
@@ -84,12 +91,14 @@
                 display(pageList, content);
                 check();
             }
-
+            
+            //Checks if button(s) should be disabled
             function check() {
                 document.getElementById("nextButton").disabled = current == pages ? true : false;
                 document.getElementById("prevButton").disabled = current == 1 ? true : false;
             }
-
+            
+            //Displays the results to the web page
             function display(results, content) {
                     content.innerHTML = " ";
                     for(let r = 0; r < results.length; r++){
@@ -151,10 +160,6 @@
                 const heroField = nameForm.querySelector('#heroField');
                 const imgField = document.querySelector("#imgField");
                 const ageField = nameForm.querySelector('#ageField');
-                prevButton.style.visibility = "visible";
-                prevButton.disabled = false;
-                nextButton.style.visibility = "visible";
-                nextButton.disabled = false;
 
                 switch(xhr.status) {
                     case 200:
@@ -178,6 +183,11 @@
                 }
 
                 if(parseResponse) {
+                    prevButton.style.visibility = "visible";
+                    prevButton.disabled = false;
+                    nextButton.style.visibility = "visible";
+                    nextButton.disabled = false;
+                    
                     const results = JSON.parse(xhr.response);
                     let result = Object.keys(results);
                     heroes = [];
@@ -186,8 +196,8 @@
                         heroes.push(hero);
                     }
                     length = heroes.length;
-                    console.log(length);
                     pages = getPages();
+                    console.log(pages);
                     
                     nameField.value = " ";
                     heroField.value = " ";
@@ -273,14 +283,6 @@
                 
                 userForm.addEventListener('submit', getUsers);
                 nameForm.addEventListener('submit', addUser);
-                
-                prevButton.addEventListener("click", prevButton);
-                nextButton.addEventListener("click", nextButton);
-                
-                prevButton.style.visibility = "hidden";
-                prevButton.disabled = true;
-                nextButton.style.visibility = "hidden";
-                nextButton.disabled = true;
             };
 
             //Calls the init function once the page loads
@@ -325,9 +327,9 @@
             <p id="message"></p>
         <!--Where the results are printed out-->
         </section>
+        <input type="button" id="prevButton" onclick="prevPage()" value="Prev">
+        <input type="button" id="nextButton" onclick="nextPage()" value="Next">
         <section id="content">
         </section>
-        <button id="prevButton">Prev</button>
-        <button id="nextButton">Next</button>
     </body>
 </html>
