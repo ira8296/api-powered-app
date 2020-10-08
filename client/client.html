@@ -51,26 +51,6 @@
                     powerSelectII.appendChild(option);
                 }
             };
-
-            prevButton.onclick = (e) => {
-                offset -= searchLimit;
-                if(offset < 0){
-                    offset = 0;
-                }
-                let content = document.querySelector("#content");
-                content.innerHTML = " ";
-                display(heroes, content);
-            }
-            
-            nextButton.onclick = (e) => {
-                offset += searchLimit;
-                if(offset >= length){
-                    offset = length - 1;
-                }
-                let content = document.querySelector("#content");
-                content.innerHTML = " ";
-                display(heroes, content);
-            }
             
             //Takes any responses and data sent by the server and prints them to the screen
             const reponseHandler = (xhr, parseResponse) => {
@@ -134,53 +114,108 @@
             };
 
             function display(results, content) {
-                for(let r = offset; r < offset + searchLimit; r++){
-                    let type = typeof results[r];
-                    if(type == "object"){
-                        let section = document.createElement("section");
-                        section.className = "result";
+                if(offset < length){
+                    for(let r = offset; r < offset + searchLimit; r++){
+                        let type = typeof results[r];
+                        if(type == "object"){
+                            let section = document.createElement("section");
+                            section.className = "result";
 
-                        let title = document.createElement("h4");
-                        title.innerHTML = results[r].heroName;
-                        let alias = document.createElement("div");
-                        alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
-                        let age = document.createElement("div");
-                        age.innerHTML = `<b>Age: </b> ` + results[r].age;
-                        let powers = document.createElement("div");
-                        powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
-                        let image = document.createElement("img");
-                        image.src = results[r].image;
+                            let title = document.createElement("h4");
+                            title.innerHTML = results[r].heroName;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                            let age = document.createElement("div");
+                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
 
-                        section.appendChild(image);
-                        section.appendChild(title);
-                        section.appendChild(alias);
-                        section.appendChild(age);
-                        section.appendChild(powers);
-                        content.appendChild(section);
-                    }
-                    else{
-                        let section = document.createElement("section");
-                        section.className = "result";
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(alias);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            content.appendChild(section);
+                        }
+                        else{
+                            let section = document.createElement("section");
+                            section.className = "result";
 
-                        let title = document.createElement("h4");
-                        title.innerHTML = results[r].heroName;
-                        let alias = document.createElement("div");
-                        alias.innerHTML = `Secret Identity: ` + results[r].realName;
-                        let age = document.createElement("div");
-                        age.innerHTML = `Age: ` + results[r].age;
-                        let powers = document.createElement("div");
-                        powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
-                        let image = document.createElement("img");
-                        image.src = results[r].image;
+                            let title = document.createElement("h4");
+                            title.innerHTML = results[r].heroName;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `Secret Identity: ` + results[r].realName;
+                            let age = document.createElement("div");
+                            age.innerHTML = `Age: ` + results[r].age;
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
 
-                        section.appendChild(image);
-                        section.appendChild(title);
-                        section.appendChild(alias);
-                        section.appendChild(age);
-                        section.appendChild(powers);
-                        content.appendChild(section);
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(alias);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            content.appendChild(section);
 
-                        return;
+                            return;
+                        }
+                    }   
+                }
+                else if(offset >= length){
+                    offset -= searchLimit;
+                    nextButton.disabled = true;
+                    for(let r = offset; r < length; r++){
+                        let type = typeof results[r];
+                        if(type == "object"){
+                            let section = document.createElement("section");
+                            section.className = "result";
+
+                            let title = document.createElement("h4");
+                            title.innerHTML = results[r].heroName;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                            let age = document.createElement("div");
+                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
+
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(alias);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            content.appendChild(section);
+                        }
+                        else{
+                            let section = document.createElement("section");
+                            section.className = "result";
+
+                            let title = document.createElement("h4");
+                            title.innerHTML = results[r].heroName;
+                            let alias = document.createElement("div");
+                            alias.innerHTML = `Secret Identity: ` + results[r].realName;
+                            let age = document.createElement("div");
+                            age.innerHTML = `Age: ` + results[r].age;
+                            let powers = document.createElement("div");
+                            powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
+                            let image = document.createElement("img");
+                            image.src = results[r].image;
+
+                            section.appendChild(image);
+                            section.appendChild(title);
+                            section.appendChild(alias);
+                            section.appendChild(age);
+                            section.appendChild(powers);
+                            content.appendChild(section);
+
+                            return;
+                        }
                     }
                 }
             }
@@ -264,6 +299,24 @@
                 prevButton.disabled = true;
                 nextButton.style.visibility = "hidden";
                 nextButton.disabled = true;
+                
+                prevButton.onclick = function() {
+                    nextButton.disabled = true;
+                    offset -= searchLimit;
+                    if(offset < 0){
+                        offset = 0;
+                    }
+                    let content = document.querySelector("#content");
+                    content.innerHTML = " ";
+                    display(heroes, content);
+                }
+            
+                nextButton.onclick = function() {
+                    offset += searchLimit;
+                    let content = document.querySelector("#content");
+                    content.innerHTML = " ";
+                    display(heroes, content);
+                }
             };
 
             //Calls the init function once the page loads

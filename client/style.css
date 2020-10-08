@@ -56,6 +56,7 @@ html, body {
     width: 15%;
     height: 39%;
     font-size: 60%;
+    border-radius: 25px;
     border: 1px solid gray;
     background-color: orange;
     margin: 4%;
@@ -97,4 +98,12 @@ html, body {
     font-family: sans-serif;
     width: 5%;
     height: 3%;
+}
+
+#prevButton:active{
+    background-color: darkorange;
+}
+
+#nextButton:active{
+    background-color: darkorange;
 }
