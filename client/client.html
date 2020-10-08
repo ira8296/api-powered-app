@@ -8,7 +8,13 @@
         <link rel="stylesheet" type="text/css" href="./style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script type="text/babel">
-            
+            const prevButton = document.querySelector("#prevButton");
+            const nextButton = document.querySelector("#nextButton");
+            const searchLimit = 6;
+            let offset = 0;
+            let length = 0;
+            let heroes;
+
             //Sets up the super powers dropdown
             const setupHTML = (xhr) => {
                 //Instances of the dropdown elements
@@ -45,6 +51,26 @@
                     powerSelectII.appendChild(option);
                 }
             };
+
+            prevButton.onclick = (e) => {
+                offset -= searchLimit;
+                if(offset < 0){
+                    offset = 0;
+                }
+                let content = document.querySelector("#content");
+                content.innerHTML = " ";
+                display(heroes, content);
+            }
+            
+            nextButton.onclick = (e) => {
+                offset += searchLimit;
+                if(offset >= length){
+                    offset = length - 1;
+                }
+                let content = document.querySelector("#content");
+                content.innerHTML = " ";
+                display(heroes, content);
+            }
             
             //Takes any responses and data sent by the server and prints them to the screen
             const reponseHandler = (xhr, parseResponse) => {
@@ -54,6 +80,17 @@
                 const heroField = nameForm.querySelector('#heroField');
                 const imgField = document.querySelector("#imgField");
                 const ageField = nameForm.querySelector('#ageField');
+                prevButton.style.visibility = "visible";
+                prevButton.disabled = false;
+                nextButton.style.visibility = "visible";
+                nextButton.disabled = false;
+                
+                if(offset == 0){
+                    prevButton.disabled = true;
+                }
+                else if (offset >= length || length <= 6){
+                    nextButton.disabled = true;
+                }
 
                 switch(xhr.status) {
                     case 200:
@@ -79,7 +116,12 @@
                 if(parseResponse) {
                     const results = JSON.parse(xhr.response);
                     let result = Object.keys(results);
-                    //console.dir(results);
+                    length = result.length;
+                    heroes = [];
+                    for(let r of result){
+                        let hero = results[r];
+                        heroes.push(hero);
+                    }
                     
                     nameField.value = " ";
                     heroField.value = " ";
@@ -87,57 +129,61 @@
                     ageField.value = " ";
                     content.innerHTML = " ";
                     
-                    for(let r of result){
-                        let type = typeof results[r];
-                        if(type == "object"){
-                            let section = document.createElement("section");
-                            section.className = "result";
-                            
-                            let title = document.createElement("h4");
-                            title.innerHTML = results[r].heroName;
-                            let alias = document.createElement("div");
-                            alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
-                            let age = document.createElement("div");
-                            age.innerHTML = `<b>Age: </b> ` + results[r].age;
-                            let powers = document.createElement("div");
-                            powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
-                            let image = document.createElement("img");
-                            image.src = results[r].image;
-                            
-                            section.appendChild(image);
-                            section.appendChild(title);
-                            section.appendChild(alias);
-                            section.appendChild(age);
-                            section.appendChild(powers);
-                            content.appendChild(section);
-                        }
-                        else{
-                            let section = document.createElement("section");
-                            section.className = "result";
-                            
-                            let title = document.createElement("h4");
-                            title.innerHTML = results[r].heroName;
-                            let alias = document.createElement("div");
-                            alias.innerHTML = `Secret Identity: ` + results[r].realName;
-                            let age = document.createElement("div");
-                            age.innerHTML = `Age: ` + results[r].age;
-                            let powers = document.createElement("div");
-                            powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
-                            let image = document.createElement("img");
-                            image.src = results[r].image;
-                            
-                            section.appendChild(image);
-                            section.appendChild(title);
-                            section.appendChild(alias);
-                            section.appendChild(age);
-                            section.appendChild(powers);
-                            content.appendChild(section);
-                            
-                            return;
-                        }
-                    }
+                    display(heroes, content);
                 }
             };
+
+            function display(results, content) {
+                for(let r = offset; r < offset + searchLimit; r++){
+                    let type = typeof results[r];
+                    if(type == "object"){
+                        let section = document.createElement("section");
+                        section.className = "result";
+
+                        let title = document.createElement("h4");
+                        title.innerHTML = results[r].heroName;
+                        let alias = document.createElement("div");
+                        alias.innerHTML = `<b>Secret Identity: </b> ` + results[r].realName;
+                        let age = document.createElement("div");
+                        age.innerHTML = `<b>Age: </b> ` + results[r].age;
+                        let powers = document.createElement("div");
+                        powers.innerHTML = `<b>Powers: </b> ` + results[r].power1 + ", " + results[r].power2;
+                        let image = document.createElement("img");
+                        image.src = results[r].image;
+
+                        section.appendChild(image);
+                        section.appendChild(title);
+                        section.appendChild(alias);
+                        section.appendChild(age);
+                        section.appendChild(powers);
+                        content.appendChild(section);
+                    }
+                    else{
+                        let section = document.createElement("section");
+                        section.className = "result";
+
+                        let title = document.createElement("h4");
+                        title.innerHTML = results[r].heroName;
+                        let alias = document.createElement("div");
+                        alias.innerHTML = `Secret Identity: ` + results[r].realName;
+                        let age = document.createElement("div");
+                        age.innerHTML = `Age: ` + results[r].age;
+                        let powers = document.createElement("div");
+                        powers.innerHTML = `Powers: ` + results[r].power1 + ", " + results[r].power2;
+                        let image = document.createElement("img");
+                        image.src = results[r].image;
+
+                        section.appendChild(image);
+                        section.appendChild(title);
+                        section.appendChild(alias);
+                        section.appendChild(age);
+                        section.appendChild(powers);
+                        content.appendChild(section);
+
+                        return;
+                    }
+                }
+            }
             
             //Makes any GET or HEAD requests 
             const requestUpdate = (e, userForm) => {
@@ -161,26 +207,6 @@
 
                 e.preventDefault();
 
-                return false;
-            };
-            
-            //Handles any searching depending on the user input
-            const requestSearch = (e, searchForm) => {
-                const input = searchForm.querySelector("input").value;
-                const searchMethod = searchForm.getAttribute('method');
-                const searchAction = searchForm.getAttribute('action');
-                
-                const xhr = new XMLHttpRequest();
-                
-                xhr.open(searchMethod, searchAction);
-                xhr.setRequestHeader('Accept', 'application/json');
-                xhr.onload = () => reponseHandler(xhr, true);
-                
-                const formData = `input=${input}`;
-                xhr.send(formData);
-
-                e.preventDefault();
-                
                 return false;
             };
 
@@ -226,7 +252,6 @@
                 
                 const nameForm = document.querySelector("#nameForm");
                 const userForm = document.querySelector("#userForm");
-                const searchForm = document.querySelector("#searchForm");
                 
                 const getUsers = (e) => requestUpdate(e, userForm);
                 const addUser = (e) => sendPost(e, nameForm);
@@ -234,7 +259,11 @@
                 
                 userForm.addEventListener('submit', getUsers);
                 nameForm.addEventListener('submit', addUser);
-                searchForm.addEventListener('submit', searchUsers);
+                
+                prevButton.style.visibility = "hidden";
+                prevButton.disabled = true;
+                nextButton.style.visibility = "hidden";
+                nextButton.disabled = true;
             };
 
             //Calls the init function once the page loads
@@ -274,11 +303,6 @@
                 <option value="head">HEAD</option>
               </select>
               <input type="submit" value="Show Heroes" />
-            </form>
-            <!--The form which enables for searching through the API-->
-            <form id="searchForm" action="/searchUsers" method="get">
-                <input type="text" value="Search for a hero">
-                <input type="submit" value="Search" />
             </form>
             <!--Where the result of every process is written-->
             <p id="message"></p>

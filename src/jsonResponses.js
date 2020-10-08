@@ -20,6 +20,7 @@ database.find({ occupation: userKey }, (err, docs) => {
     for (let d = 0; d < docs.length; d++) {
       users[docs[d].realName] = docs[d];
     }
+    console.log(users);
   }
 });
 
@@ -172,29 +173,6 @@ const getPowers = (request, response) => {
   return respondJSON(request, response, 200, powers);
 };
 
-// Searches through the users object for any specific users based on the client's input
-const search = (request, response, param) => {
-  let responseCode = 200;
-  const results = {};
-  const user = Object.keys(users);
-
-  // Loops through users to find any relevant users
-  // to be used as search results
-  for (let u = 0; u < user.length; u++) {
-    const index = user[u];
-    const current = users[index];
-    if (current.realName.includes(param.input) || current.heroName.includes(param.input)) {
-      results[index] = current;
-    }
-  }
-
-  // If there are no results, return 404 code
-  if (results === {}) {
-    responseCode = 404;
-  }
-  return respondJSON(request, response, responseCode, results);
-};
-
 // Returns an error message stating that the requested data doesn't exist
 const notReal = (request, response) => {
   const responseJSON = {
@@ -228,7 +206,6 @@ module.exports = {
   addUser,
   getUsers,
   getUsersMeta,
-  search,
   notReal,
   notRealMeta,
   notFound,
