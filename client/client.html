@@ -53,6 +53,8 @@
                     powerSelectII.appendChild(option);
                 }
                 
+                prevButton.onclick = prevPage;
+                nextButton.onclick = nextPage;
                 prevButton.style.visibility = "hidden";
                 prevButton.disabled = true;
                 nextButton.style.visibility = "hidden";
@@ -327,8 +329,8 @@
             <p id="message"></p>
         <!--Where the results are printed out-->
         </section>
-        <input type="button" id="prevButton" onclick="prevPage()" value="Prev">
-        <input type="button" id="nextButton" onclick="nextPage()" value="Next">
+        <input type="button" id="prevButton" value="Prev">
+        <input type="button" id="nextButton" value="Next">
         <section id="content">
         </section>
     </body>
