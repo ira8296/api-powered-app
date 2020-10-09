@@ -20,7 +20,6 @@ database.find({ occupation: userKey }, (err, docs) => {
     for (let d = 0; d < docs.length; d++) {
       users[docs[d].realName] = docs[d];
     }
-    console.log(users);
   }
 });
 

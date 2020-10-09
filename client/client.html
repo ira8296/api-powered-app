@@ -8,8 +8,8 @@
         <link rel="stylesheet" type="text/css" href="./style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script type="text/babel">
-            const prevButton = document.querySelector("#prevButton");
-            const nextButton = document.querySelector("#nextButton");
+            let prevButton = document.querySelector("#prevButton");
+            let nextButton = document.querySelector("#nextButton");
             const searchLimit = 6;
             let length = 0;
             let pages = 0;
@@ -53,8 +53,10 @@
                     powerSelectII.appendChild(option);
                 }
                 
-                prevButton.onclick = prevPage;
-                nextButton.onclick = nextPage;
+                prevButton = document.querySelector("#prevButton");
+                nextButton = document.querySelector("#nextButton");
+                prevButton.addEventListener('click', prevPage);
+                nextButton.addEventListener('click', nextPage);
                 prevButton.style.visibility = "hidden";
                 prevButton.disabled = true;
                 nextButton.style.visibility = "hidden";
@@ -88,7 +90,7 @@
                 
                 pageList = heroes.slice(begin, end);
                 
-                let content = document.querySelector("#content");
+                let content = document.getElementById("content");
                 
                 display(pageList, content);
                 check();
